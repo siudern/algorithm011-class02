@@ -67,3 +67,63 @@
    lookup：O(logn)  
    insert：O(logn)  
    delete：O(logn)
+
+### 栈和队列
+stack：栈，后进先出 last in first out LIFO  插入、删除都是O(1)，查询是O(n)  
+queue：队列，先进先出，first in first out FIFO  插入、删除都是O(1)，查询是O(n)  
+
+deque：Double-End Queue 双端队列，插入、删除都是O(1)，查询是O(n)  
+Priority queue：优先队列，插入操作是O(1)，取出操作是O(nlogn)，按照元素的优先级取出  
+底层具体实现的数据结构较为多样和复杂：heap、BST（binary search tree）、treap， 
+```go
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+
+//使用数组模拟栈的实现
+type Stack struct {
+	MaxTop int //表示最大栈存放个数
+	Top int //顶栈
+	arr [5]int  //数组模拟栈
+}
+
+//入栈
+func (this *Stack) Push(val int) (err error)  {
+	//判断栈是否满
+	if this.Top == this.MaxTop -1 {
+		fmt.Println("stack full")
+		return errors.New("stack full")
+	}
+	//
+	this.Top++
+	//入栈
+	this.arr[this.Top] = val
+	return
+}
+
+func (this *Stack) List() {
+	// 判断栈是否为空
+	if this.Top == -1 {
+		fmt.Println("stack empty")
+		return
+	}
+	for i:=this.Top; i>=0; i-- {
+		fmt.Printf("arr[%d]=%d\n", i, this.arr[i])
+	}
+}
+
+func (this *Stack) Pop() (val int, err error) {
+	if this.Top == -1 {
+		fmt.Println("stack empty")
+		return 0, errors.New("stack empty")
+	}
+	//先取值，再top--
+	val = this.arr[this.Top]
+	this.Top--
+	return val, nil
+}
+```
